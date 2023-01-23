@@ -1,7 +1,8 @@
-# Ignore log files and directories
-**/log
-*.log
+# Ignore all log files and directories
+**/.log
+**/logs/
 
-# Ignore OS and IDE generated files
+# Ignore OS and IDE generated files and directories
 **/__pycache__/
-.idea
+.idea/
+**/.ipynb_checkpoints/
