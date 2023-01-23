@@ -11,35 +11,51 @@ def calculate_hardness(structure, bonds, model):
     :param model: Hardness model for the calculations.
     :return: Intrinsic hardness of the structure.
     """
-    prod = 1
-    for bond in bonds:
-        match model:
-            case "CAS":
+    n = len(bonds)
+
+    if n == 0:
+        logging.warning("No bonds detected in structure.")
+        hardness = 0
+    else:
+        volume = structure.volume
+        prod = 1
+        for bond in bonds:
+            if model == "CAS":
                 fi = ((bond.ENs[0] - bond.ENs[1]) / (bond.ENs[0] + bond.ENs[1])) ** 2
                 z = (bond.ENs[0] / bond.CNs[0]) * (bond.ENs[1] / bond.CNs[1])
-                prod = prod * (z ** 0.006) * (bond.bond_length ** -3.18) * math.exp(-2.44 * fi)
-            case "EN":
-                fi = 0.25 * abs((bond.ENs[0] - bond.ENs[1])) / (bond.ENs[0] * bond.ENs[1]) ** 0.5
+                prod = (
+                    prod
+                    * (z**0.006)
+                    * (bond.bond_length**-3.18)
+                    * math.exp(-2.44 * fi)
+                )
+            elif model == "EN":
+                fi = (
+                    0.25
+                    * abs((bond.ENs[0] - bond.ENs[1]))
+                    / (bond.ENs[0] * bond.ENs[1]) ** 0.5
+                )
                 xi = ((bond.ENs[0] / bond.CNs[0]) * (bond.ENs[1] / bond.CNs[1])) ** 0.5
                 prod = prod * (xi * math.exp(-2.7 * fi))
-            case "BS":
+            elif model == "BS":
                 fi = ((bond.ENs[0] - bond.ENs[1]) / (bond.ENs[0] + bond.ENs[1])) ** 2
-                s = (1 / bond.CNs[0] / bond.CNs[1]) * (bond.ENs[0] / 0.481 * bond.ENs[1] / 0.481) ** 0.5 / bond.bond_length
+                s = (
+                    (1 / bond.CNs[0] / bond.CNs[1])
+                    * (bond.ENs[0] / 0.481 * bond.ENs[1] / 0.481) ** 0.5
+                    / bond.bond_length
+                )
                 prod = prod * s * math.exp(-2.8 * fi)
-            case _:
+            else:
                 logging.error(f"Invalid hardness model: {model}")
                 prod = 0
 
-    n = len(bonds)
-    volume = structure.volume
-    match model:
-        case "CAS":
+        if model == "CAS":
             hardness = (986 * (n / volume) ** 0.844) * prod ** (1 / n)
-        case "EN":
+        elif model == "EN":
             hardness = 469.27 * (n / volume) * prod ** (1 / n) - 7.24
-        case "BS":
-            hardness = (1450*n/volume) * prod**(1/n)
-        case _:
+        elif model == "BS":
+            hardness = (1450 * n / volume) * prod ** (1 / n)
+        else:
             logging.error(f"Invalid hardness model: {model}")
             hardness = 0
 
