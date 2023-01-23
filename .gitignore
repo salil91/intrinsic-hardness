@@ -1,0 +1,7 @@
+# Ignore log files and directories
+**/log
+*.log
+
+# Ignore OS and IDE generated files
+**/__pycache__/
+.idea
