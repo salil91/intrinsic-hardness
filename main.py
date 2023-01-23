@@ -12,9 +12,7 @@ from pathlib import Path
 
 import click
 
-import bond_detectors
-import hardness_calculators
-import structure_makers
+from intrinsic_hardness import bond_detectors, hardness_calculators, structure_makers
 
 
 @click.command()
