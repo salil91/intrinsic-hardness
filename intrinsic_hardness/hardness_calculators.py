@@ -16,6 +16,7 @@ def calculate_hardness(structure, bonds, model):
     if n == 0:
         logging.warning("No bonds detected in structure.")
         hardness = 0
+    #TODO: Catch cases where bonds.CN[i] == 0
     else:
         volume = structure.volume
         prod = 1
@@ -25,8 +26,8 @@ def calculate_hardness(structure, bonds, model):
                 z = (bond.ENs[0] / bond.CNs[0]) * (bond.ENs[1] / bond.CNs[1])
                 prod = (
                     prod
-                    * (z**0.006)
-                    * (bond.bond_length**-3.18)
+                    * (z ** 0.006)
+                    * (bond.bond_length ** -3.18)
                     * math.exp(-2.44 * fi)
                 )
             elif model == "EN":

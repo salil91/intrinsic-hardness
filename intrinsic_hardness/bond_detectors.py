@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 from pymatgen.analysis.local_env import CrystalNN
 
@@ -20,8 +21,11 @@ class Bond:
         self.species = (atom_0.specie, neighbor_1["site"].specie)
         self.ENs = (atom_0.specie.X, neighbor_1["site"].specie.X)
         self.CNs = bond_CNs
-        self.bond_length = math.dist(
-            parent_structure[site_index_0].coords, neighbor_1["site"].coords
+        # self.bond_length = math.dist(
+        #     parent_structure[site_index_0].coords, neighbor_1["site"].coords
+        # )  Only available in python 3.8+
+        self.bond_length = np.linalg.norm(
+            parent_structure[site_index_0].coords - neighbor_1["site"].coords
         )
 
 
