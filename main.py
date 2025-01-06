@@ -19,6 +19,7 @@ from intrinsic_hardness import bond_detectors, hardness_calculators, structure_m
 @click.option(
     "--single-structure",
     help="Location of structure file",
+    type=click.Pathclick.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path),
     required=True,
 )
 @click.option(
@@ -38,7 +39,7 @@ def main(single_structure, model):
         level=logging.INFO,
     )
 
-    structure = structure_makers.structure_from_file(Path.cwd() / single_structure)
+    structure = structure_makers.structure_from_file(single_structure)
     bonds = bond_detectors.detect_bonds(structure)
     hardness = hardness_calculators.calculate_hardness(
         structure, bonds, model=model.upper()
