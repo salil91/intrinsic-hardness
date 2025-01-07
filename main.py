@@ -19,7 +19,7 @@ from intrinsic_hardness import bond_detectors, hardness_calculators, structure_m
 @click.option(
     "--single-structure",
     help="Location of structure file",
-    type=click.Pathclick.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path),
     required=True,
 )
 @click.option(
