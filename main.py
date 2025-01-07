@@ -45,7 +45,7 @@ def main(single_structure, model):
         structure, bonds, model=model.upper()
     )
 
-    print(f"{model.upper()} Model Hardness = {hardness}")
+    print(f"{model.upper()} Model Hardness = {hardness:.2f} GPa")
 
 
 if __name__ == "__main__":
